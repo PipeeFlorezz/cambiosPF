@@ -1,0 +1,38 @@
+.acceder {
+    padding: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color:  rgb(252, 218, 247);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.acceder .maquetacion {
+    border-radius: 8px;
+    min-width: 35%;
+    height: 535px;
+    margin: 0px auto;
+}
+
+.formadmin > div > mat-form-field  {
+    width: 100% !important;
+}
+
+  .img {
+    width: 100%;
+    height: 450px;
+  }
+
+  .img img{
+    width: 100%;
+    height: 100%;
+  }
+
+.administradorForm {
+  width: 100%;
+}

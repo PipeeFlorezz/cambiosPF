@@ -1,0 +1,105 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+    padding: 0px;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: rgb(3, 117, 117, .4);
+}
+
+.header {
+    background-color: rgba(75, 74, 74, 0.962);
+    text-align: center;
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 25px;
+}
+
+.header ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+.header ul li {
+        cursor: pointer;
+        margin-bottom: 22px;
+        color: white;
+    }
+
+.header ul li:first-child {
+        cursor: none !important;
+    }
+
+.header ul li a {
+        text-decoration: none;
+        color: white;
+    }
+
+.listaAlumnos table{
+    width: 100%;
+}
+
+.iconoUsuario {
+    color: whitesmoke !important;
+}
+
+section {
+    width: 100%;
+}
+
+
+
+@media screen and (min-width:768px) {
+    .header {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        top: 0;
+        width: 168px;
+        margin-bottom: 0px !important;
+    }
+
+    section {
+        padding-left: 35px;
+        padding-top: 17px;
+    }
+}
+
+@media screen and (min-width:880px) {
+
+    .header {
+        width: 200px;
+    }
+
+    section {
+        padding-left: 55px;
+    }
+}
+
+@media screen and (min-width:992px) {
+
+    section {
+        padding-left: 35px;
+    }
+}
+
+@media screen and (min-width:1200px) {
+
+    section {
+        padding-left: 0px;
+    }
+}
+
+@media screen and (min-width:1400px) {
+
+    section {
+        padding-right: 30px;
+        margin-left: -47px;
+    }
+}

@@ -1,0 +1,16 @@
+.crearCursoForm {
+    background-color: #f3f9ff;
+    width: 100%;
+}
+
+@media screen and (min-width:768px) {
+    .crearCursoForm {
+        width: 90%;
+    }
+}
+
+@media screen and (min-width:1200px) {
+    .crearCursoForm {
+        width: 60%;
+    }
+}

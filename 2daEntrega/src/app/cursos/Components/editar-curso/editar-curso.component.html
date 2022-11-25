@@ -1,0 +1,58 @@
+<h2>Editar Curso</h2>
+
+<div class="p-3 border border-3 rounded-3 border-secondary editarCursoForm">
+  <div mat-dialog-content>
+      <form [formGroup]="formCurso" class="example-form">
+          <div class="row">
+              <div class="col">
+                  <p>
+                      <mat-form-field class="example-full-width " appearance="fill">
+                          <mat-label>Profesor</mat-label>
+                          <input [(ngModel)]="curso.profesor"
+                          matInput formControlName="profesor" placeholder="Ingrese su email">
+                      </mat-form-field>
+                  </p>
+              </div>
+              <div class="col">
+                  <p>
+                      <mat-form-field class="example-full-width" appearance="fill">
+                          <mat-label>Nombre</mat-label>
+                          <input [(ngModel)]="curso.nombre"
+                          matInput formControlName="nombre" placeholder="Ingrese un nombre">
+                      </mat-form-field>
+                  </p>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col">
+                  <p>
+                      <mat-form-field class="example-full-width" appearance="fill">
+                          <mat-label>Inicia</mat-label>
+                          <input type="date" 
+                          matInput formControlName="inicia" placeholder="Ingrese apellido">
+                      </mat-form-field>
+                  </p>
+              </div>
+              <div class="col">
+                  <p>
+                      <mat-form-field class="example-full-width" appearance="fill">
+                          <mat-label>Finaliza</mat-label>
+                          <input type="date"
+                           matInput formControlName="finaliza" placeholder="Ingrese una edad">
+                      </mat-form-field>
+                  </p>
+              </div>
+          </div>
+          <div class="row">
+              <p>
+                  <mat-slide-toggle formControlName="inscripcion">habilitar inscripciones</mat-slide-toggle>
+              </p>
+          </div>
+      </form>
+  </div>
+  <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>No</button>
+      <button mat-button (click)="editarCurso()" [disabled]="!formCurso.valid">Editar Curso</button>
+  </div>
+</div>
+

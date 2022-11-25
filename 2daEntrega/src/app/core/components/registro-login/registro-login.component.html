@@ -1,0 +1,133 @@
+<div class="acceder">
+    <div class="maquetacion">
+        <div class="container-fluid">
+            <div class="row">
+                <div *ngIf="primerForm">
+                    <form #elegirUsuario="ngForm" (ngSubmit)="formUsuario(elegirUsuario)">
+                        <div class="mb-3">
+                          <label  class="form-label">Tipo de usuario</label>
+                          <select class="form-select form-select-sm" aria-label=".form-select-sm example" #usuario="ngModel"
+                          [(ngModel)]="Usuario" name="usuario">
+                            <option selected value="Administrador">Administrador</option>
+                            <option value="Alumno">Alumno</option>
+                          </select>
+                          <span *ngIf="!usuario.value && usuario.touched" class="text-danger">El tipo de genero es obligatorio</span>
+                          <div  class="form-text">Formulario exclusivo para elegir el tipo de usuario.</div>
+                        </div>
+
+                        <div class="mb-3 d-grid">
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                      </form>
+                </div>
+                <div>
+                    <div *ngIf="Admin" class="administradorForm border">
+                        <form #administradorForm="ngForm" (ngSubmit)="adminForm(administradorForm)" id="ADMINFORM">
+                            <div class="mb-3">
+                              <label  class="form-label">Usuario</label>
+                              <input type="text" class="form-control"
+                              [(ngModel)]="admin.nombre" name="nombre" #nombre="ngModel" value="Administrador" placeholder="Administrador">
+                              <span *ngIf="!nombre.value && nombre.touched" class="text-danger">El nombre es obligatorio</span>
+
+                            </div>
+                            <div class="mb-3">
+                              <label  class="form-label">Contraseña</label>
+                              <input type="password" class="form-control"
+                              [(ngModel)]="admin.clave" name="clave">
+                            </div>
+                            <div class="mb-3 d-grid">
+                                <button type="submit" class="btn btn-primary">Enviar</button>
+                            </div>
+                          </form>
+                    </div>
+                    <div *ngIf="Alumno">
+                      <div *ngIf="Registro">
+                        <form #registroForm="ngForm" (ngSubmit)="RegistroForm(registroForm)">
+                          <div class="mb-3">
+                            <label  class="form-label">Email</label>
+                            <input type="email" class="form-control" #email="ngModel"
+                            [(ngModel)]="alumno.email" name="email">
+                            <span *ngIf="!email.value && email.touched" class="text-danger">El email es obligatorio</span>
+                          </div>
+                          <div class="mb-3">
+                            <label  class="form-label">Nombre</label>
+                            <input type="text" class="form-control" #nombre="ngModel"
+                            [(ngModel)]="alumno.nombre" name="nombre">
+                            <span *ngIf="!nombre.value && nombre.touched" class="text-danger">El nombre es obligatorio</span>
+                          </div>
+                          <div class="mb-3">
+                            <label  class="form-label">Apellido</label>
+                            <input type="text" class="form-control" #apellido="ngModel"
+                            [(ngModel)]="alumno.apellido" name="apellido">
+                            <span *ngIf="!apellido.value && apellido.touched" class="text-danger">El apellido es obligatorio</span>
+                          </div>
+                          <div class="row">
+                            <div class="col">
+                              <div class="mb-3">
+                                <label  class="form-label">Edad</label>
+                                <input type="number" class="form-control" #edad="ngModel"
+                                [(ngModel)]="alumno.edad" name="edad">
+                                <span *ngIf="!edad.value && edad.touched" class="text-danger">La edad es obligatoria y el campo debe ser numerico</span>
+                              </div>
+                            </div>
+                            <div class="col">
+                              <div class="mb-3">
+                                <label  class="form-label">Pais</label>
+                                <input type="text" class="form-control" #pais="ngModel"
+                                [(ngModel)]="alumno.pais" name="pais">
+                                <span *ngIf="!pais.value && pais.touched" class="text-danger">El pais es obligatorio</span>
+                              </div>
+                            </div>
+                            <div class="col">
+                              <div class="mb-3">
+                                <label  class="form-label">Sexo</label>
+                                <select class="form-select form-select-sm" aria-label=".form-select-sm example" #sexo="ngModel"
+                                [(ngModel)]="alumno.sexo" name="sexo">
+                                  <option selected value="Masculino">Masculino</option>
+                                  <option value="Femenino">Femenino</option>
+                                </select>
+                                <span *ngIf="!sexo.value && sexo.touched" class="text-danger">El tipo de genero es obligatorio</span>
+                              </div>
+                            </div>
+                          </div>
+                            <div class="mb-3">
+                              <label  class="form-label">Contraseña</label>
+                              <input type="password" class="form-control" #clave="ngModel"
+                              [(ngModel)]="alumno.clave" name="clave">
+                              <span *ngIf="!clave.value && clave.touched" class="text-danger">La contraseña es obligatorio</span>
+                            </div>
+                          <div class="mb-3 d-grid">
+                              <button type="submit" class="btn btn-primary">Enviar</button>
+                          </div>
+                          <div  class="form-text text-center">Formulario exclusivo solo para registrarse</div>
+                          <p class="text-center"> ¿ Ya te has registrado ? <span style="cursor: pointer;" (click)="loguearme()" class="text-secondary"> Loguéate </span></p>
+                        </form>
+                      </div>
+                      
+                      <div *ngIf="Login">
+                        <form #loginForm="ngForm" (ngSubmit)="loguinForm(loginForm)">
+                          <div class="mb-3">
+                            <label  class="form-label">Email</label>
+                            <input type="text" class="form-control mb-2" #email="ngModel"
+                            [(ngModel)]="alumno.email" name="email">
+                            <span *ngIf="!email.value && email.touched" class="text-danger">El email es obligatorio</span>
+                          </div>
+                            <div class="mb-3">
+                              <label  class="form-label">Contraseña</label>
+                              <input type="password" class="form-control mb-2" #clave="ngModel"
+                              [(ngModel)]="alumno.clave" name="clave">
+                              <span *ngIf="!clave.value && clave.touched" class="text-danger">La contraseña es obligatorio</span>
+                            </div>
+                          <div class="mb-3 d-grid">
+                              <button type="submit" class="btn btn-primary">Enviar</button>
+                          </div>
+                          <div  class="form-text text-center">Formulario exclusivo para Login</div>
+                          <p class="text-center"> ¿ No te has registrado ? <span style="cursor: pointer;" (click)="registrarme()" class="text-secondary"> Registrarme </span></p>
+                        </form>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

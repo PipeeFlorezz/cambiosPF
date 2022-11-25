@@ -1,0 +1,77 @@
+<h1 mat-dialog-title>Inscripcion</h1>
+<div mat-dialog-content>
+    <form [formGroup]="formAlumno" class="example-form">
+      <div class="row">
+        <div class="col">
+          <p>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" 
+                placeholder="Ingrese un email" >
+              </mat-form-field>
+        </p>
+        </div>
+        <div class="col">
+          <p>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" 
+                placeholder="Ingrese un nombre" >
+              </mat-form-field>
+        </p>
+        </div>
+        <div class="col">
+          <p>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Apellido</mat-label>
+                <input matInput formControlName="apellido" 
+                placeholder="Ingrese apellido" >
+              </mat-form-field>
+        </p>
+        </div>
+      <div class="col">
+        <p>
+          <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Edad</mat-label>
+              <input matInput formControlName="edad" 
+              placeholder="Ingrese una edad">
+            </mat-form-field>
+      </p>
+      </div>
+      <div class="col">
+        <p>
+          <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Pais</mat-label>
+              <input matInput formControlName="pais" 
+              placeholder="Ingrese un pais">
+            </mat-form-field>
+      </p>
+      </div>
+      <div class="col">
+        <p>
+          <mat-form-field appearance="fill">
+            <mat-label>Genero</mat-label>
+            <mat-select formControlName="sexo">
+              <mat-option *ngFor="let genero of Generos" [value]="genero.viewValue">
+                {{genero.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+      </p>
+      </div>
+      <div class="col">
+        <p>
+          <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Contraseña</mat-label>
+              <input matInput formControlName="clave" 
+              placeholder="Ingrese una contraseña">
+            </mat-form-field>
+      </p>
+      </div>
+    </div>
+      </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>No</button>
+  <button mat-button  (click)="inscribirAlumno()" [disabled]="!formAlumno.valid">Ok</button>
+</div>

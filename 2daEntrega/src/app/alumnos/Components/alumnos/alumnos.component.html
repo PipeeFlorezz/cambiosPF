@@ -1,0 +1,11 @@
+<div class="d-flex  align-items-center mb-2">
+    <h2 class="text-white">Lista de Alumnos</h2>
+    <button *ngIf="admin" mat-raised-button (click)="crearAlumno()" 
+    class="btn btn-primary btn-sm botonCrearAlumno">
+    Crear nuevo alumno</button>
+    
+</div>
+
+<div>
+    <router-outlet></router-outlet>   
+</div>
