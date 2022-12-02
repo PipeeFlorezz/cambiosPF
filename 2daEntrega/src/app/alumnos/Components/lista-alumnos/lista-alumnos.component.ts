@@ -6,6 +6,9 @@ import { EliminarAlumnoComponent } from '../eliminar-alumno/eliminar-alumno.comp
 import { Admin, alumno } from '../../../models/models';
 import {  Subscription } from 'rxjs';
 import { EditarAlumnoComponent } from '../editar-alumno/editar-alumno.component';
+import { selectAlumnosCargados } from '../../state/alumnos.selectors';
+import { Store } from '@ngrx/store';
+import { deleteAlumno, loadAlumnos, updateAlumno } from '../../state/alumnos.actions';
 
 @Component({
   selector: 'app-lista-alumnos',
@@ -13,7 +16,7 @@ import { EditarAlumnoComponent } from '../editar-alumno/editar-alumno.component'
   styleUrls: ['./lista-alumnos.component.css']
 })
 export class ListaAlumnosComponent implements OnInit, OnDestroy {
-
+  public sppiner: boolean = true;
   public alumnos: alumno[];
   public displayedColumns: string[];
   public admin: boolean;
@@ -25,8 +28,10 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
   constructor(
     public Dialog: MatDialog,
     private router: Router,
-    private alumnosServicios: AlumnosService
+    private alumnosServicios: AlumnosService,
+    private store: Store
   ) { 
+    this.store.dispatch(loadAlumnos())
     this.alumnos = [];
     this.admin = false;
     this.alumno = false;
@@ -34,13 +39,9 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.usuarioLogueado();
     this.traerAlumnos();
-    let result: any = localStorage.getItem('usuarioLogueado');
-    let usuarioLogueado = JSON.parse(result);
-    if(usuarioLogueado.nombre == 'Administrador' || usuarioLogueado.nombre == 'administrador'){
-      this.admin = true;
-      this.displayedColumns.push('accion')
-    }
+
   }
 
   ngOnDestroy(): void {
@@ -48,69 +49,56 @@ export class ListaAlumnosComponent implements OnInit, OnDestroy {
   }
 
   traerAlumnos(){
-    this.subscripcion1 = this.alumnosServicios.getAlumnos().subscribe(
-      res => {
-        console.log(res);
-        this.alumnos = res.alumnos
-      }
-    )
-  }
+    setTimeout(() => {
+      this.subscripcion1 = this.store.select(selectAlumnosCargados).subscribe((alumnos: alumno[]) => {
 
-  crearAlumno(): void {
-    console.log('crear alumno')
-    this.router.navigate(['/crearAlumno']);
+        if(alumnos && alumnos.length >= 1){
+          setTimeout(() => {
+            this.alumnos = alumnos;
+            this.sppiner = false;
+          }, 1500);
+        }
+      });
+    }, 1200);
   }
 
   eliminarAlumno(Alumno: alumno){
-    console.log(Alumno);
-
     let dialog = this.Dialog.open(EliminarAlumnoComponent, {
-      width: '30%',
-      height: '30%'
+      width: '46%',
+      height: '25%'
     })
 
     dialog.beforeClosed().subscribe(res => {
-      console.log(res);
-      console.log(typeof res);
-      if(res === undefined) return;
-      if(res.length === 0) return;
-      if(res == '') return;
+      if(res === undefined || res.length === 0 || res == '') return;
       if(res == 'Eliminar'){
-        this.alumnosServicios.eliminarAlumno(Alumno._id).subscribe(
-          res => {
-            console.log(res);
-            this.traerAlumnos();
-          }
-        )
+        this.store.dispatch(deleteAlumno({alumno: Alumno}))
       }
     })
-
   }
 
   editarAlumno(Alumno: alumno){
-    console.log(Alumno)
     let alumno: any = JSON.stringify(Alumno);
     localStorage.setItem('editarAlumno', alumno)
     let dialog = this.Dialog.open(EditarAlumnoComponent, {
-      width: '60%',
+      width: '75%',
       height: '65%'
     })
 
     dialog.beforeClosed().subscribe(alumno => {
-      console.log(alumno);
-      console.log(Alumno)
       localStorage.removeItem('editarAlumno')
-
-      if(alumno === undefined || alumno.length === 0 || alumno == ''){
-        return;
-      }
-      this.alumnosServicios.editarAlumno(alumno, Alumno._id).subscribe(
-        res => {
-          console.log(res);
-          this.traerAlumnos();
-        }
-      )
+      if(alumno === undefined || alumno.length === 0 || alumno == '') return
+      alumno._id = Alumno._id;
+       this.store.dispatch(updateAlumno({alumno: alumno}))
     })
+  }
+
+  usuarioLogueado(){
+    let result: any = localStorage.getItem('usuarioLogueado');
+    let usuarioLogueado = JSON.parse(result);
+    if(usuarioLogueado.nombre == 'Administrador' || usuarioLogueado.nombre == 'administrador'){
+      this.admin = true;
+      this.displayedColumns.push('accion')
+    }
   }
 
 }

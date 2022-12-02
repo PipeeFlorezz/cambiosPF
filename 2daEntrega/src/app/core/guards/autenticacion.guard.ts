@@ -19,7 +19,6 @@ export class AutenticacionGuard implements CanActivate {
     let token = JSON.parse(this.token)
 
     if(token){
-      console.log(token)
       return true;
     }else {
       this.router.navigate(['/registro'])

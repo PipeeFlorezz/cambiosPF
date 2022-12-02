@@ -52,8 +52,8 @@ export class CursosService {
         return this.http.post<Curso>(this.url + 'crearCurso', formData, { headers: headers })
     }
 
-    editarCurso(Alumno: Curso, id: any): Observable<any> {
-        let data = JSON.stringify(Alumno);
+    editarCurso(curso: Curso, id: any): Observable<any> {
+        let data = JSON.stringify(curso);
         let headers = new HttpHeaders().set('Content-Type', 'application/json')
             .set('authorization', this.getToken());
 
@@ -70,7 +70,6 @@ export class CursosService {
     getToken(): any {
         let result: any = localStorage.getItem('token');
         let token = JSON.parse(result);
-        console.log(token);
         if (!token) {
             return 'No token';
         } else {

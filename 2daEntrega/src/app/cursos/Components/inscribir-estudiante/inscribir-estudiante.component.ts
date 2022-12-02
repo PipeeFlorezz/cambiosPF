@@ -17,16 +17,15 @@ export class InscribirEstudianteComponent implements OnInit {
 
   public formAlumno: FormGroup;
   public Generos: genero[];
-  public admin: boolean ;
-  public usuario: boolean;
+  public admin!: boolean;
+  public alumno: boolean = true;;
+
   constructor(
     private formBuilder: FormBuilder,
     private matDialogRef: MatDialogRef<InscribirEstudianteComponent>
 
   ) { 
 
-      this.admin = false;
-      this.usuario = true;
       this.Generos = [
       {value: 'genero-0', viewValue: 'Masculino'},
       {value: 'genero-1', viewValue: 'Femenino'},
@@ -36,29 +35,38 @@ export class InscribirEstudianteComponent implements OnInit {
       email: ['', [Validators.required]],
       nombre: ['', [Validators.required]],
       apellido: ['', [Validators.required]],
-      edad: ['', [Validators.required]],
+      edad: ['', [Validators.required, Validators.min(15), this.ValidateAge()]],
       pais: ['', [Validators.required]],
       sexo: ['', [Validators.required]],
       clave: ['', [Validators.required]]
-    })
+      //skills: new FormArray([new FormControl])
+
+    });
   }
 
   ngOnInit(): void {
-    let result: any = localStorage.getItem('usuarioLogueado');
-    let usuario = JSON.parse(result);
-    if(usuario.nombre == 'Administrador' || usuario.nombre == 'Administrador'){
-      this.admin = true;
-      this.usuario = false;
-    }else {
-      this.usuario = true;
-      this.admin = false;
-    }
+    this.usrLogueado()
   }
 
   inscribirAlumno(){
     console.log(this.formAlumno.value);
-    let data: any = this.formAlumno.value
+    let data: alumno = this.formAlumno.value
     this.matDialogRef.close(data);
+  }
+
+  usrLogueado(){
+    let user: any, result: any = localStorage.getItem('usuarioLogueado');
+    user = JSON.parse(result);
+    if(user.nombre == 'Administrador' || user.nombre == 'administrador'){
+      this.admin = true;
+      this.alumno = false
+    }
+  }
+
+  ValidateAge(): ValidatorFn {
+    return (control: AbstractControl): { [key: string ]: any} | null => {
+      return (!Number.isInteger(parseInt(control.value))) ? { failAge: true } : null;
+    }
   }
 
 }

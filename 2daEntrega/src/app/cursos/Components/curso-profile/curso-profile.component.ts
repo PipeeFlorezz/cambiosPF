@@ -5,6 +5,9 @@ import { Admin, alumno, Curso } from '../../../models/models'
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { InscribirEstudianteComponent } from '../inscribir-estudiante/inscribir-estudiante.component'
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import {selectCursosCargados } from '../../state/cursos.selectors';
+import { InscribirEstudiante, loadCursos } from '../../state/cursos.actions';
 @Component({
   selector: 'app-curso-profile',
   templateUrl: './curso-profile.component.html',
@@ -14,15 +17,20 @@ export class CursoProfileComponent implements OnInit, OnDestroy {
 
   public curso: Curso;
   public estudiantes!: alumno[];
+  public estudiantess!: alumno[];
   public displayedColumns: string[];
   public subscripcion!: Subscription
+  public subscripcio2!: Subscription
   public token: any;
   public admin: boolean = false;
+  public cursos!: Curso[];
+  public success: boolean = false;
   constructor(
     public dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private cursosService: CursosService
+    private cursosService: CursosService,
+    private store: Store
   ) {
     this.displayedColumns = ['email', 'nombre', 'apellido', 'edad', 'pais', 'sexo'];
     //this.cursos = this.cursosService.llamarCursos();
@@ -35,25 +43,44 @@ export class CursoProfileComponent implements OnInit, OnDestroy {
       imagen: '',
       inscripcion: true
     }
+    this.store.dispatch(loadCursos());
+
   }
 
   ngOnInit(): void {
     this.usrLogueado();
-    this.route.params.subscribe((params: any) => {
-      console.log(params['id']);
-      let id: any = params['id'];
+    this.subscripcio2 =  this.route.params.subscribe((params: any) => {
+      let id = params['id'];
       this.llamarCurso(id);
     });
   }
 
+  llamarCurso(id: any){
+    this.subscripcion = this.store.select(selectCursosCargados).subscribe((cursos: Curso[]) => {
+        this.cursos = cursos;
+        let curso: Curso[];
+        if(this.cursos.length >= 1){
+          curso = this.cursos.filter((elemento: Curso) => {
+            return elemento._id == id;
+          });
+          this.curso = curso[0];
+          this.estudiantes = curso[0].estudiantes;
+        }else {
+          return;
+        }
+
+    });
+  }
+
   ngOnDestroy(): void {
-    this.subscripcion.unsubscribe();
+    if(this.subscripcion) return this.subscripcion.unsubscribe();
+    if(this.subscripcio2) return this.subscripcio2.unsubscribe();
+
   }
 
   usrLogueado(){
     let user: any, result: any = localStorage.getItem('usuarioLogueado');
     user = JSON.parse(result);
-    console.log(user)
     if(user.nombre == 'Administrador' || user.nombre == 'administrador'){
       this.admin = true;
     }
@@ -65,31 +92,16 @@ export class CursoProfileComponent implements OnInit, OnDestroy {
       height: '68%'
     });
 
-    dialog.beforeClosed().subscribe(res => {
-      console.log(res);
-      console.log(typeof res)
-      if(res === undefined) return;
-      if(res.length == 0) return;
-      if(res.nombre.length == 0) return;
-      this.cursosService.inscribirEstudiante(res, curso._id).subscribe(
-        res => {
-          console.log(res)
-          this.estudiantes = res.cursoActualizado.estudiantes;
-          this.curso.estudiantes = this.estudiantes;
-        }
-      )
+    dialog.beforeClosed().subscribe(estudiante => {
+      if(estudiante === undefined || estudiante.length == 0 || estudiante.nombre.length == 0) return;
+      this.store.dispatch(InscribirEstudiante({alumno: estudiante, cursoId: curso._id}));
+      this.success = true;
+      setTimeout(() => {
+        this.success = false;
+      }, 2000);
     })
   }
 
-  llamarCurso(id: any){
-    this.subscripcion = this.cursosService.getCurso(id).subscribe(
-      res => {
-        console.log(res)
-        this.curso = res.curso;
-        this.estudiantes = this.curso.estudiantes
-        console.log(this.curso);
-      }
-    )
-  }
+
   
 }

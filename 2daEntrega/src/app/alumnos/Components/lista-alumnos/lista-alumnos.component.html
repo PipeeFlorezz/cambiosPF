@@ -1,9 +1,12 @@
-<div *ngIf="alumnos.length == 0" class="alert alert-info">
+<div *ngIf="alumnos && alumnos.length == 0" class="alert alert-info">
     <strong>No hay estudiantes</strong> Si eres administrador puedes crear e inscibir un estudiante a algun curso, 
     si eres usuario normal puedes inscrbirte tu mismo.
   </div>
 
-<div *ngIf="alumnos.length >= 1" class="listaAlumnos border">
+  <div *ngIf="sppiner" class="spppiner">
+    <mat-spinner></mat-spinner>
+  </div>
+<div *ngIf="alumnos && alumnos.length >= 1" class="listaAlumnos border">
     <table mat-table [dataSource]="alumnos" class="mat-elevation-z8">
 
         <!--- Note that these columns can be defined in any order.

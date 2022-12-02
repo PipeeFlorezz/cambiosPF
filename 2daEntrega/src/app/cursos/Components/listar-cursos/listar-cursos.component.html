@@ -1,8 +1,11 @@
 <div class="col cursos">
-    <div *ngIf="cursos.length == 0" class="alert alert-info">
+    <div *ngIf="cursos && cursos.length == 0" class="alert alert-info">
         <strong>No hay cursos existentes</strong>si eres administrador puedes crear uno.
       </div>
-    <ul *ngIf="cursos.length >= 1 ">
+      <div *ngIf="sppiner" class="spppiner">
+        <mat-spinner></mat-spinner>
+      </div>
+    <ul *ngIf="cursos && cursos.length >= 1 ">
         <li *ngFor="let curso of cursos">
             <mat-card class="example-card">
                 <mat-card-header class="cursoTitle">
@@ -18,7 +21,7 @@
                             <span>Estudiantes: {{curso.estudiantes.length}}</span>
                             <span>Inicia: {{curso.inicia | date}}</span>
                             <span>Finaliza: {{curso.finaliza | date}}</span>
-                            <span>Inscripción: {{curso.inscripcion}}</span>
+                            <span>Inscripción: {{curso.inscripcion | booleanTexto: 'Inscripcion abierta': 'Inscripcion cerrada'}}</span>
                         </p>
                         <mat-card-actions class="firstmca" *ngIf="admin">
                             <button mat-button (click)="editarCurso(curso)"><span>Editar</span>

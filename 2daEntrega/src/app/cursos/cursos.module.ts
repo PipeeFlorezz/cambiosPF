@@ -14,6 +14,10 @@ import { BooleanTextoPipe } from './Pipes/boolean-texto.pipe';
 import { ListarCursosComponent } from './Components/listar-cursos/listar-cursos.component';
 import { SharedModule } from '../shared/shared.module';
 import { CrearCursoComponent } from './Components/crear-curso/crear-curso.component';
+import { EffectsModule } from '@ngrx/effects';
+import { CursosEffects } from './state/cursos.effects';
+import { StoreModule } from '@ngrx/store';
+import { cursosFeatureKey, reducer } from './state/cursos.reducer';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,9 @@ import { CrearCursoComponent } from './Components/crear-curso/crear-curso.compon
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature(cursosFeatureKey, reducer),
+    EffectsModule.forFeature([CursosEffects])
   ],
   providers: [
     CursosService

@@ -29,11 +29,8 @@ export class HeaderComponent implements OnInit {
   }
 
   ngDoCheck(): void {
-    console.log(this.usuarioLogueado.nombre);
     let data: any = localStorage.getItem('usuarioLogueado')
-    console.log(data)
     if(!data){
-      console.log('No se ha logueado nadie')
       return;
     }else{
       if(data.nombre == 'administrador' || data.nombre == 'Administrador'){
@@ -45,10 +42,6 @@ export class HeaderComponent implements OnInit {
         this.alumno = true;
         this.Alumno = JSON.parse(data);
       }
-      console.log(this.Admin);
-      console.log(this.Alumno);
-      console.log('Alguien se ha logueado')
-
     }
 
   }

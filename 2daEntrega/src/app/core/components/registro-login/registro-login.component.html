@@ -1,27 +1,47 @@
 <div class="acceder">
+  <div *ngIf="dataSuccess" class="alert alert-success mb-2 success text-center" role="alert">
+    Has ingresado con exito
+  </div>
+    <div class="text-white intro">
+      <h2>Bienvenido al projecto final de Angular en Coder Hose</h2>
+    </div>
     <div class="maquetacion">
         <div class="container-fluid">
-            <div class="row">
-                <div *ngIf="primerForm">
-                    <form #elegirUsuario="ngForm" (ngSubmit)="formUsuario(elegirUsuario)">
-                        <div class="mb-3">
-                          <label  class="form-label">Tipo de usuario</label>
-                          <select class="form-select form-select-sm" aria-label=".form-select-sm example" #usuario="ngModel"
-                          [(ngModel)]="Usuario" name="usuario">
-                            <option selected value="Administrador">Administrador</option>
-                            <option value="Alumno">Alumno</option>
-                          </select>
-                          <span *ngIf="!usuario.value && usuario.touched" class="text-danger">El tipo de genero es obligatorio</span>
-                          <div  class="form-text">Formulario exclusivo para elegir el tipo de usuario.</div>
-                        </div>
-
-                        <div class="mb-3 d-grid">
-                            <button type="submit" class="btn btn-primary">Enviar</button>
-                        </div>
-                      </form>
+          <div class="input-group mb-3 Form" *ngIf="primerForm">
+            <div mat-dialog-content class="usuario">
+              <form [formGroup]="elegirUsuario" class="usuario">
+                <div class="row">
+                  <div class="col">
+                    <div class="input-group mb-3">
+                      <mat-form-field appearance="fill" class="usuario">
+                          <label for="sexo" class="form-label">Elige usuario</label>
+                          <mat-select formControlName="usuario"
+                              [ngClass]="{'form-control': true, 'is-invalid': elegirUsuario.get('usuario')?.errors && elegirUsuario.get('usuario')?.touched}">
+                              <mat-option *ngFor="let usuario of Usuarios" [value]="usuario.viewValue">
+                                  {{usuario.viewValue}}
+                              </mat-option>
+                          </mat-select>
+                          <div class="invalid-feedback">
+                              <small
+                                  *ngIf="elegirUsuario.get('usuario')?.errors?.['required'] && elegirUsuario.get('usuario')?.touched">El
+                                  campo es requerido</small>
+                          </div>
+                      </mat-form-field>
+                  </div>
+                  </div>
                 </div>
+              </form>
+              <div mat-dialog-actions>
+                <div class="mb-3 d-grid">
+                  <button type="submit" (click)="formUsuario()" class="btn btn-primary" [disabled]="!elegirUsuario.valid">Enviar</button>
+              </div>
+            </div>
+          </div>
+          </div>
+            
+            
                 <div>
-                    <div *ngIf="Admin" class="administradorForm border">
+                    <div *ngIf="Admin" class="administradorForm border Form">
                         <form #administradorForm="ngForm" (ngSubmit)="adminForm(administradorForm)" id="ADMINFORM">
                             <div class="mb-3">
                               <label  class="form-label">Usuario</label>
@@ -36,13 +56,13 @@
                               [(ngModel)]="admin.clave" name="clave">
                             </div>
                             <div class="mb-3 d-grid">
-                                <button type="submit" class="btn btn-primary">Enviar</button>
+                                <button type="submit" class="btn btn-primary" [disabled]="!administradorForm.valid">Enviar</button>
                             </div>
                           </form>
                     </div>
                     <div *ngIf="Alumno">
                       <div *ngIf="Registro">
-                        <form #registroForm="ngForm" (ngSubmit)="RegistroForm(registroForm)">
+                        <form #registroForm="ngForm" class="Form" (ngSubmit)="RegistroForm(registroForm)">
                           <div class="mb-3">
                             <label  class="form-label">Email</label>
                             <input type="email" class="form-control" #email="ngModel"
@@ -105,7 +125,7 @@
                       </div>
                       
                       <div *ngIf="Login">
-                        <form #loginForm="ngForm" (ngSubmit)="loguinForm(loginForm)">
+                        <form #loginForm="ngForm" (ngSubmit)="loguinForm(loginForm)" class="Form">
                           <div class="mb-3">
                             <label  class="form-label">Email</label>
                             <input type="text" class="form-control mb-2" #email="ngModel"
@@ -127,7 +147,6 @@
                       </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </div>

@@ -34,7 +34,6 @@ export class AlumnosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.traerAlumnos();
     let result: any = localStorage.getItem('usuarioLogueado');
     let usuarioLogueado = JSON.parse(result);
     if(usuarioLogueado.nombre == 'Administrador' || usuarioLogueado.nombre == 'administrador'){
@@ -42,76 +41,14 @@ export class AlumnosComponent implements OnInit, OnDestroy {
       this.displayedColumns.push('accion')
     }
   }
+  crearAlumno(){
+    this.router.navigate(['/crearAlumno']);
+  }
 
   ngOnDestroy(): void {
     if(this.subscripcion1) return this.subscripcion1.unsubscribe();
   }
 
-  traerAlumnos(){
-    this.subscripcion1 = this.alumnosServicios.getAlumnos().subscribe(
-      res => {
-        console.log(res);
-        this.alumnos = res.alumnos
-      }
-    )
-  }
-
-  crearAlumno(): void {
-    console.log('crear alumno')
-    this.router.navigate(['/crearAlumno']);
-  }
-
-  eliminarAlumno(Alumno: alumno){
-    console.log(Alumno);
-
-    let dialog = this.Dialog.open(EliminarAlumnoComponent, {
-      width: '30%',
-      height: '30%'
-    })
-
-    dialog.beforeClosed().subscribe(res => {
-      console.log(res);
-      console.log(typeof res);
-      if(res === undefined) return;
-      if(res.length === 0) return;
-      if(res == '') return;
-      if(res == 'Eliminar'){
-        this.alumnosServicios.eliminarAlumno(Alumno._id).subscribe(
-          res => {
-            console.log(res);
-            this.traerAlumnos();
-          }
-        )
-      }
-    })
-
-  }
-
-  editarAlumno(Alumno: alumno){
-    console.log(Alumno)
-    let alumno: any = JSON.stringify(Alumno);
-    localStorage.setItem('editarAlumno', alumno)
-    let dialog = this.Dialog.open(EditarAlumnoComponent, {
-      width: '57%',
-      height: '55%'
-    })
-
-    dialog.beforeClosed().subscribe(alumno => {
-      console.log(alumno);
-      console.log(Alumno)
-      localStorage.removeItem('editarAlumno')
-
-      if(alumno === undefined || alumno.length === 0 || alumno == ''){
-        return;
-      }
-      this.alumnosServicios.editarAlumno(alumno, Alumno._id).subscribe(
-        res => {
-          console.log(res);
-          this.traerAlumnos();
-        }
-      )
-    })
-  }
 
 
 

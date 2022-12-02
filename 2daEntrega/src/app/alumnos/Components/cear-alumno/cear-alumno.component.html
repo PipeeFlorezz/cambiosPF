@@ -1,6 +1,11 @@
 <h1 mat-dialog-title>Crear alumno</h1>
-<div class="p-3 border border-3 rounded-3 border-secondary crearAlumnoForm">
-    <form [formGroup]="formAlumno" (ngSubmit)="Registrar(form)">
+
+<div *ngIf="dataSuccess" class="alert alert-success" role="alert">
+    Has creado el curso con exito
+  </div>
+  
+<div class="p-3 border rounded-3 border-secondary crearAlumnoForm">
+    <form [formGroup]="formAlumno">
         <div class="row">
             <div class="col">
                 <label for="email" class="form-label">Email</label>
@@ -69,7 +74,7 @@
             <div class="col">
                 <label for="pais" class="form-label">Pais</label>
                 <div class="input-group mb-3">
-                    <input type="password"
+                    <input type="text"
                         [ngClass]="{'form-control': true, 'is-invalid': formAlumno.get('pais')?.errors && formAlumno.get('pais')?.touched}"
                         formControlName="pais" placeholder="Pais">
                     <div class="invalid-feedback">
@@ -111,7 +116,6 @@
                                 campo es requerido</small>
                         </div>
                     </mat-form-field>
-
                 </div>
             </div>
             <!--

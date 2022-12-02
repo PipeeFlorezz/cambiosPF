@@ -6,8 +6,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class BooleanTextoPipe implements PipeTransform {
 
   transform(value: boolean, ...args: string[]): string {
-    console.log(value);
-    console.log(args);
     if(!value){
       return args[1]
     }else {

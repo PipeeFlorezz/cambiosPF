@@ -16,7 +16,6 @@ export class EliminarAlumnoComponent implements OnInit {
   }
 
   eliminarAlumno(param: string): void{
-    console.log(param.length);
     if(param === 'Eliminar'){
       this.matDialogRef.close(param);
     }

@@ -13,6 +13,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { EditarAlumnoComponent } from './Components/editar-alumno/editar-alumno.component';
 import { CearAlumnoComponent } from './Components/cear-alumno/cear-alumno.component';
 import { ListaAlumnosComponent } from './Components/lista-alumnos/lista-alumnos.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { AlumnosEffects } from './state/alumnos.effects';
+import { alumnosFeatureKey, reducer } from './state/alumnos.reducer';
 
 
 @NgModule({
@@ -30,7 +34,10 @@ import { ListaAlumnosComponent } from './Components/lista-alumnos/lista-alumnos.
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature(alumnosFeatureKey, reducer),
+    EffectsModule.forFeature([AlumnosEffects])
+
   ],
   providers: [
     AlumnosService

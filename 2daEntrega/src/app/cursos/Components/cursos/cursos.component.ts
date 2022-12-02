@@ -16,7 +16,6 @@ export class CursosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('Componente padre de los cursos')
     let result: any = localStorage.getItem('usuarioLogueado');
     let usuarioLogueado = JSON.parse(result);
     if(usuarioLogueado.nombre == 'Administrador' || usuarioLogueado.nombre == 'administrador'){

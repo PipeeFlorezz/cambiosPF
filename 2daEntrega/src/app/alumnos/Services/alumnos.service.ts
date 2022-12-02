@@ -24,7 +24,7 @@ export class AlumnosService {
   crearAlumno(Alumno: alumno): Observable<any> {
     let data = JSON.stringify(Alumno);
     let headers = new HttpHeaders().set('Content-Type', 'application/json')
-                                   .set('authorization', this.getToken());
+                                   
     return this.http.post<alumno>(this.url + 'crearALumno', data, {headers: headers})
   }
 
@@ -46,7 +46,6 @@ export class AlumnosService {
   getToken(): any {
     let result: any = localStorage.getItem('token');
     let token = JSON.parse(result);
-    console.log(token);
     if(!token){
       return 'No token';
     }else {

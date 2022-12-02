@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Curso } from 'src/app/models/models';
 import { CursosService } from '../../Services/cursos.service';
-
+import { createCurso, loadCursos } from '../../state/cursos.actions';
+import {  Subscription } from 'rxjs';
 @Component({
   selector: 'app-crear-curso',
   templateUrl: './crear-curso.component.html',
@@ -11,14 +13,20 @@ import { CursosService } from '../../Services/cursos.service';
 })
 export class CrearCursoComponent implements OnInit {
 
+
   public curso!: Curso;
   public formCurso: FormGroup
   public uploadFile: File[];
+  public dataSuccess!: boolean;
+  public subscripcion!: Subscription
   constructor(
     private formBuilder: FormBuilder,
     private cursoServices: CursosService,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
+    this.store.dispatch(loadCursos());
+
     this.uploadFile = [];
     this.formCurso = this.formBuilder.group({
       profesor: ['', [Validators.required]],
@@ -36,16 +44,33 @@ export class CrearCursoComponent implements OnInit {
 
   crearCurso() {
     console.log(this.formCurso.value)
-    console.log(this.formCurso)
-    if(this.uploadFile){
-      this.cursoServices.crearCurso(this.formCurso.value, this.uploadFile).subscribe(
-        res => {
-          console.log(res);
-          this.router.navigate(['/cursos'])
-        }
-      )
-    }
+    this.curso = this.formCurso.value
+    this.subscripcion = this.cursoServices.crearCurso(this.curso, this.uploadFile).subscribe(
+      res => {
+        console.log(res);
+        this.dataSuccess = true;
+        setTimeout(() => {
+          this.router.navigate(['/cursos']);
+          this.dataSuccess = false;
+        }, 2100);
+      }
+    )
+
+    // Patron redux
+    /*if(this.uploadFile){
+      this.store.dispatch(createCurso({curso: this.curso, file: this.uploadFile}))
+      this.dataSuccess = true;
+      setTimeout(() => {
+        this.router.navigate(['/cursos']);
+        this.dataSuccess = false
+      }, 2500);
+    }*/
   }
+
+  ngOnDestroy(): void {
+    if(this.subscripcion) return this.subscripcion.unsubscribe();
+  }
+
 
   subirImg(event: any) { 
     console.log(event)
@@ -55,3 +80,5 @@ export class CrearCursoComponent implements OnInit {
   }
 
 }
+
+

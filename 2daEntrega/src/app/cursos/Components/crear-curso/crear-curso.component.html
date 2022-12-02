@@ -1,6 +1,10 @@
 <h2>Crear Curso</h2>
 
-<div class="p-3 border border-3 rounded-3 border-secondary crearCursoForm">
+<div *ngIf="dataSuccess" class="alert alert-success" role="alert">
+  Has creado el curso con exito
+</div>
+
+<div class="p-3 border rounded-3 border-secondary crearCursoForm">
   <div mat-dialog-content>
     <form [formGroup]="formCurso" class="example-form">
       <div class="row">
@@ -8,7 +12,13 @@
           <p>
             <mat-form-field class="example-full-width " appearance="fill">
               <mat-label>Profesor</mat-label>
-              <input matInput formControlName="profesor" placeholder="Ingrese su email">
+              <input
+                [ngClass]="{'form-control': true, 'is-invalid': formCurso.get('profesor')?.errors && formCurso.get('profesor')?.touched}"
+                matInput formControlName="profesor" placeholder="Ingrese un nombre">
+              <div class="invalid-feedback">
+                <small *ngIf="formCurso.get('profesor')?.errors?.['required'] && formCurso.get('profesor')?.touched">El
+                  campo es requerido</small>
+              </div>
             </mat-form-field>
           </p>
         </div>
@@ -16,7 +26,13 @@
           <p>
             <mat-form-field class="example-full-width" appearance="fill">
               <mat-label>Nombre</mat-label>
-              <input matInput formControlName="nombre" placeholder="Ingrese un nombre">
+              <input
+                [ngClass]="{'form-control': true, 'is-invalid': formCurso.get('nombre')?.errors && formCurso.get('nombre')?.touched}"
+                matInput formControlName="nombre" placeholder="Ingrese un nombre">
+              <div class="invalid-feedback">
+                <small *ngIf="formCurso.get('nombre')?.errors?.['required'] && formCurso.get('nombre')?.touched">El
+                  campo es requerido</small>
+              </div>
             </mat-form-field>
           </p>
         </div>
@@ -26,7 +42,13 @@
           <p>
             <mat-form-field class="example-full-width" appearance="fill">
               <mat-label>Inicia</mat-label>
-              <input type="date" matInput formControlName="inicia" placeholder="Ingrese apellido">
+              <input type="date"
+                [ngClass]="{'form-control': true, 'is-invalid': formCurso.get('inicia')?.errors && formCurso.get('inicia')?.touched}"
+                matInput formControlName="inicia" placeholder="Ingrese una fecha de inicio">
+              <div class="invalid-feedback">
+                <small *ngIf="formCurso.get('inicia')?.errors?.['required'] && formCurso.get('inicia')?.touched">El
+                  campo es requerido</small>
+              </div>
             </mat-form-field>
           </p>
         </div>
@@ -34,7 +56,12 @@
           <p>
             <mat-form-field class="example-full-width" appearance="fill">
               <mat-label>Finaliza</mat-label>
-              <input type="date" matInput formControlName="finaliza" placeholder="Ingrese una edad">
+              <input [ngClass]="{'form-control': true, 'is-invalid': formCurso.get('finaliza')?.errors && formCurso.get('finaliza')?.touched}"
+              type="date" matInput formControlName="finaliza" placeholder="Ingrese una fecha de fin">
+              <div class="invalid-feedback">
+                <small *ngIf="formCurso.get('finaliza')?.errors?.['required'] && formCurso.get('finaliza')?.touched">El
+                  campo es requerido</small>
+              </div>
             </mat-form-field>
           </p>
         </div>
@@ -48,8 +75,7 @@
         <div class="col">
           <p>
             <label class="form-label">Elige una imagen</label>
-            <input class="form-control form-control-sm" 
-             type="file" (change)="subirImg($event)">
+            <input class="form-control form-control-sm" type="file" (change)="subirImg($event)">
           </p>
         </div>
       </div>
@@ -57,81 +83,7 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close>No</button>
-    <button mat-button (click)="crearCurso()" id="buttonCrearCurso">Crear Curso</button>
+    <button mat-button (click)="crearCurso()" [disabled]="!formCurso.valid">Crear Curso</button>
   </div>
 </div>
 
-<!--
-<form #crearC="ngForm" (ngSubmit)="crearCurso(crearC)">
-    <div class="mb-3">
-        <label  class="form-label">Profesor</label>
-        <input type="text" class="form-control mb-2" #profesor="ngModel"
-        [(ngModel)]="curso.profesor" name="profesor">
-        <span *ngIf="!profesor.value && profesor.touched" class="text-danger">Es campo es obligatorio</span>
-      </div>
-      <div class="mb-3">
-        <label  class="form-label">Nombre</label>
-        <input type="text" class="form-control mb-2" #nombre="ngModel"
-        [(ngModel)]="curso.nombre" name="nombre">
-        <span *ngIf="!nombre.value && nombre.touched" class="text-danger">Es campo es obligatorio</span>
-      </div>
-      <div class="mb-3">
-        <label  class="form-label">Inicia</label>
-        <input type="date" class="form-control mb-2" #date="ngModel"
-        [(ngModel)]="curso.inicia" name="inicia">
-        <span *ngIf="!date.value && date.touched" class="text-danger">Es campo es obligatorio</span>
-      </div>
-      <div class="mb-3">
-        <label  class="form-label">Finaliza</label>
-        <input type="date" class="form-control mb-2" #date2="ngModel"
-        [(ngModel)]="curso.finaliza" name="finaliza">
-        <span *ngIf="!date2.value && date2.touched" class="text-danger">Es campo es obligatorio</span>
-      </div>
-      <div class="mb-3">
-        <div class="d-flex align-items-center">
-            <label class="form-label mt-1">Inscripcion</label>
-            <mat-slide-toggle class="mx-3" [(ngModel)]="curso.inscripcion" [ngModelOptions]="{standalone: true}">Slide me!</mat-slide-toggle>
-        </div>
-      </div>
-    <div class="mb-3 d-grid">
-        <button type="submit" class="btn btn-primary">Enviar</button>
-    </div>
-    <div  class="form-text text-white">Editar curso</div>
-  </form>
-
-  <div class="container my-5">
-    <form class="example-form">
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Profesor</mat-label>
-          <input matInput value="Google" >
-        </mat-form-field>
-
-        <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Nombre</mat-label>
-            <input matInput >
-          </mat-form-field>
-      
-        <table class="example-full-width" cellspacing="0"><tr>
-          <td><mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Inicia</mat-label>
-            <label  class="form-label">Finaliza</label>
-
-            <input matInput>
-          </mat-form-field></td>
-          <td><mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Finaliza</mat-label>
-            <input matInput>
-          </mat-form-field></td>
-        </tr></table>
-      
-        <p>
-          <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Inscripción</mat-label>
-            <mat-slide-toggle>Slide me!</mat-slide-toggle>
-          </mat-form-field >
-        </p>
-
-      </form>
-      
-  </div>
--->

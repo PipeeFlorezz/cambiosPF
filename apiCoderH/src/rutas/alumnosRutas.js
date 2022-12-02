@@ -8,7 +8,7 @@ router.get('/alumnos', verify, async (req, res) => {
     console.log('req.user: ' + req.user);
 
     let alumnos = await Alumnos.find().sort('-createdAt');
-    return res.json({alumnos});
+    return res.json(alumnos);
     
 });
 
@@ -28,7 +28,7 @@ router.get('/alumno/:id', verify, async (req, res) => {
 
 
 
-router.post('/crearALumno', verify, async (req, res) => {
+router.post('/crearALumno', async (req, res) => {
     console.log('req.body del formulario registro')
     console.log(req.body);
     let params = req.body;

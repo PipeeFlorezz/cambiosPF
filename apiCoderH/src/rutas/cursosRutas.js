@@ -16,8 +16,7 @@ router.get('/cursos', verify, async (req, res) => {
     console.log('req.user: ' + req.user);
 
     let cursos = await Cursos.find().sort('-createdAt').populate('estudiantes');
-    return res.json({cursos});
-    
+    return res.json(cursos);
 });
 
 
@@ -139,7 +138,7 @@ router.put('/curso/editar/:id', verify, async (req, res) => {
             inscripcion: body.inscripcion
         }, {new:true});
         
-        return res.json({cursoActualizado});
+        return res.json(cursoActualizado);
     }else {
         return res.json({noDatos: 'Datos incompletos'});
     }
